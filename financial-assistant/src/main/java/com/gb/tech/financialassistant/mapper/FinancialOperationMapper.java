@@ -1,6 +1,6 @@
 package com.gb.tech.financialassistant.mapper;
 
-import com.gb.tech.financialassistant.domain.FinancialOperation;
+import com.gb.tech.financialassistant.entity.FinancialOperation;
 import com.gb.tech.financialassistant.dto.FinancialOperationDto;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;

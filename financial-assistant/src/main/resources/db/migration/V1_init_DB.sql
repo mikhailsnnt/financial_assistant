@@ -17,17 +17,3 @@ alter table if exists orders_details
         foreign key (operation_category_id) references operation_category;
 
 
---INSERT INTO financial_operation (account_id, operation_category_id, isSpending, amount)
---VALUES (1, 1, false, 100);
---
---INSERT INTO financial_operation (account_id, operation_category_id, isSpending, amount)
---VALUES (2, 2, false, 200);
---
---INSERT INTO financial_operation (account_id, operation_category_id, isSpending, amount)
---VALUES (3, 3, false, 300);
---
---INSERT INTO financial_operation (account_id, operation_category_id, isSpending, amount)
---VALUES (4, 4, true, 400);
---
---INSERT INTO financial_operation (account_id, operation_category_id, isSpending, amount)
---VALUES (5, 5, true, 500);

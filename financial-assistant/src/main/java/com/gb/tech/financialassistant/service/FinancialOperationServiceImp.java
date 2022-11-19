@@ -1,54 +1,51 @@
 package com.gb.tech.financialassistant.service;
 
-import com.gb.tech.financialassistant.dao.FinancialOperationRepository;
-import com.gb.tech.financialassistant.domain.FinancialOperation;
+import com.gb.tech.financialassistant.exeptions.InvalidParamsException;
+import com.gb.tech.financialassistant.repository.FinancialOperationRepository;
+import com.gb.tech.financialassistant.entity.FinancialOperation;
 import com.gb.tech.financialassistant.dto.FinancialOperationDto;
 import com.gb.tech.financialassistant.mapper.FinancialOperationMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
 import javax.transaction.Transactional;
 import java.util.List;
 
+
 @Service
+@AllArgsConstructor
 public class FinancialOperationServiceImp implements FinancialOperationService{
 
     private final FinancialOperationMapper mapper = FinancialOperationMapper.MAPPER;
 
     private final FinancialOperationRepository financialOperationRepository;
 
-
-    public FinancialOperationServiceImp(FinancialOperationRepository financialOperationRepository) {
-        this.financialOperationRepository = financialOperationRepository;
-    }
-
     @Override
-    public FinancialOperationDto getFinancialOperationById(Long id){
+    public FinancialOperationDto getById(Long id){
         FinancialOperation financialOperation = financialOperationRepository.findById(id).orElse(null);
-        return FinancialOperationMapper.MAPPER.fromFinancialOperation(financialOperation);
+        // с обработкой ошибок определимся позже.
+        if (financialOperation == null) {
+            throw new InvalidParamsException("financialOperation:" + null);
+        }
+        return mapper.fromFinancialOperation(financialOperation);
     }
 
     @Override
-    public List<FinancialOperationDto> getAllFinancialOperation() {
-        return FinancialOperationMapper.MAPPER.fromFinancialOperationList(financialOperationRepository.findAll());
-    }
-
-    @Override
-    public List<FinancialOperationDto> getAllFinancialOperationIsSpending(Boolean isSpending){
-        return FinancialOperationMapper.MAPPER
-                .fromFinancialOperationList(financialOperationRepository.findAllByIsSpending(isSpending));
+    public List<FinancialOperationDto> getAll(Boolean isSpending){
+        return mapper.fromFinancialOperationList(financialOperationRepository.findAllByIsSpending(isSpending));
     }
 
     @Override
     @Transactional
-    public void saveFinancialOperation(FinancialOperationDto financialOperationDto) {
+    public void save(FinancialOperationDto financialOperationDto) {
 
         financialOperationRepository.save(mapper.toFinancialOperation(financialOperationDto));
 
     }
 
     @Override
-    public void deleteFinancialOperation(Long id){
+    public void delete(Long id){
 
         financialOperationRepository.deleteById(id);
     }

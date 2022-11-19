@@ -1,4 +1,4 @@
-package com.gb.tech.financialassistant.domain;
+package com.gb.tech.financialassistant.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,13 +12,14 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
+@Builder
 @Table(name = "financial_operation")
 public class FinancialOperation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
 //    @ManyToOne
@@ -34,6 +35,7 @@ public class FinancialOperation {
     @Column(name = "isspending")
     private Boolean isSpending;
 
+    @Column(name = "amount")
     private BigDecimal amount;
 
     @Column(name = "datetime")

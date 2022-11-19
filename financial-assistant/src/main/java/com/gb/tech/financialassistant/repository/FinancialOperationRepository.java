@@ -1,6 +1,6 @@
-package com.gb.tech.financialassistant.dao;
+package com.gb.tech.financialassistant.repository;
 
-import com.gb.tech.financialassistant.domain.FinancialOperation;
+import com.gb.tech.financialassistant.entity.FinancialOperation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

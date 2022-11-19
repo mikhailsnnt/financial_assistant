@@ -2,8 +2,10 @@ package com.gb.tech.financialassistant.controllers;
 
 
 import com.gb.tech.financialassistant.dto.FinancialOperationDto;
-import com.gb.tech.financialassistant.service.FinancialOperationServiceImp;
+import com.gb.tech.financialassistant.service.FinancialOperationService;
 
+
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,47 +13,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/financialOperation")
 public class FinancialOperationController {
 
-    private final FinancialOperationServiceImp financialOperationServiceImp;
+    private final FinancialOperationService financialOperationServiceImp;
 
-
-    public FinancialOperationController(FinancialOperationServiceImp financialOperationServiceImp) {
-        this.financialOperationServiceImp = financialOperationServiceImp;
+    @GetMapping("/id")
+    public FinancialOperationDto getById(@RequestParam Long id){
+        return financialOperationServiceImp.getById(id);
     }
 
-    @GetMapping("/{id}")
-    public FinancialOperationDto getById(@PathVariable Long id){
-        return financialOperationServiceImp.getFinancialOperationById(id);
+    @GetMapping
+    public List<FinancialOperationDto> getAll(@RequestParam boolean isSpending){
+        return financialOperationServiceImp.getAll(isSpending);
     }
 
-    @GetMapping("/all")
-    public List<FinancialOperationDto> getAll(){
-        return financialOperationServiceImp.getAllFinancialOperation();
-    }
 
-    @GetMapping("/getAllIsSpending/{isSpending}")
-    // переделать без пасвариабл, наверное через реквестпарам.
-    public List<FinancialOperationDto> getAllFinancialOperationIsSpending(@PathVariable Boolean isSpending){
-        return financialOperationServiceImp.getAllFinancialOperationIsSpending(isSpending);
-    }
-
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ResponseEntity<HttpStatus> saveFinancialOperation(@RequestBody FinancialOperationDto financialOperationDto){
-
-        financialOperationServiceImp.saveFinancialOperation(financialOperationDto);
-
-        return ResponseEntity.ok(HttpStatus.OK);
+    public void save(@RequestBody FinancialOperationDto financialOperationDto){
+        financialOperationServiceImp.save(financialOperationDto);
     }
 
     @DeleteMapping
-    public void deleteFinancialOperation(@RequestBody Long id){
-        financialOperationServiceImp.deleteFinancialOperation(id);
+    public void delete(@RequestParam Long id){
+        financialOperationServiceImp.delete(id);
     }
 
-//    @DeleteMapping("{id}")            это работает
-//    public void deleteFinancialOperation(@PathVariable Long id){
-//        financialOperationServiceImp.deleteFinancialOperation(id);
-//    }
+
 }

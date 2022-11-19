@@ -1,22 +1,17 @@
 package com.gb.tech.financialassistant.service;
 
-import com.gb.tech.financialassistant.domain.FinancialOperation;
 import com.gb.tech.financialassistant.dto.FinancialOperationDto;
 
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 public interface FinancialOperationService {
 
-    FinancialOperationDto getFinancialOperationById(Long id);
+    FinancialOperationDto getById(Long id);
 
-    List<FinancialOperationDto> getAllFinancialOperation();
+    List<FinancialOperationDto> getAll(Boolean isSpending);
 
-    List<FinancialOperationDto> getAllFinancialOperationIsSpending(Boolean isSpending);
+    void save(FinancialOperationDto financialOperationDto);
 
-    @Transactional
-    void saveFinancialOperation(FinancialOperationDto financialOperationDto);
-
-    void deleteFinancialOperation(Long id);
+    void delete(Long id);
 }
