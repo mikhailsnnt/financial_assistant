@@ -56,6 +56,24 @@ services:
     ports:
       - '6379:6379'
 
+  spring-cloud-eureka:
+    image:
+      spring-cloud-eureka
+    restart: always
+
+  spring-cloud-gateway:
+    image:
+      spring-cloud-gateway
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://spring-cloud-eureka:8761/eureka
+    restart:
+      always
+    ports:
+      - '7771:8762'
+    depends_on:
+      - spring-cloud-eureka
+
+
 
 volumes:
   postgres:
