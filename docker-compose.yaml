@@ -37,6 +37,16 @@ services:
     ports:
       - "5432:5432"
 
+    #TODO
+  common-api-operation:
+    image: common-api-operation
+    restart: always
+    environment:
+
+
+
+
+
   flyway:
     image: flyway/flyway
     command: -url=jdbc:postgresql://postgres/financial_operations?createIfNotExists=true -schemas=public  -locations=filesystem:/flyway/sql/financial_operations -user=${POSTGRES_USER} -password=${POSTGRES_PASSWORD} -connectRetries=60 migrate

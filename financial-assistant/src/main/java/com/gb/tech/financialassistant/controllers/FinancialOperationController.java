@@ -19,7 +19,7 @@ public class FinancialOperationController {
 
     private final FinancialOperationService financialOperationServiceImp;
 
-    @GetMapping("/id")
+    @GetMapping("/id")  // TODO через строку запроса
     public FinancialOperationDto getById(@RequestParam Long id){
         return financialOperationServiceImp.getById(id);
     }

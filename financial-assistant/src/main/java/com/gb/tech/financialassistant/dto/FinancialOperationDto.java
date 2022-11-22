@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 public class FinancialOperationDto {
 
     private Long id;
-    private Long account;
-    private Long operationCategory;
+    private Long accountId;
+    private Long operationCategoryId;
     private Boolean isSpending;
     private BigDecimal amount;
     private LocalDateTime dateTime;

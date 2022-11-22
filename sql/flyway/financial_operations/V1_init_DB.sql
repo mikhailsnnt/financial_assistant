@@ -1,7 +1,7 @@
 create table financial_operation (
                                 id bigserial not null,
-                                account_id int8 not null,
-                                operation_category_id int8,
+                                account_id bigint not null,
+                                operation_category_id bigint,
                                 isSpending boolean DEFAULT false,
                                 amount numeric(19, 2),
                                 dateTime timestamp,
