@@ -14,6 +14,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    environment: staging_environment
 
     steps:
     - uses: actions/checkout@v3
@@ -23,6 +24,28 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+
+    - name: Generate settings.xml for Maven Builds
+      uses: whelk-io/maven-settings-xml-action@v21
+      env:
+        deploy_key: ${{secrets.deploy_token}}
+      with:
+        repositories: >
+          [
+            { 
+              "id": "github", 
+              "url": "https://maven.pkg.github.com/mikhailsnnt/financial_assistant" 
+            }
+          ]
+        servers: >
+          [
+            { 
+              "id": "github", 
+              "username": "mikhailsnnt", 
+              "password": "${env.deploy_token}" 
+            }
+          ]
+
     - name: Build with Maven
       run: |
         mvn -B package --file ./lib-exception/pom.xml
