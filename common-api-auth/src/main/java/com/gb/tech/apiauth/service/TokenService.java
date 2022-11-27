@@ -1,0 +1,83 @@
+package com.gb.tech.apiauth.service;
+
+import com.gb.financial.assistant.lib.jwt.impl.JwtRsaParser;
+import com.gb.tech.apiauth.config.SecurityConfig;
+import com.gb.tech.apiauth.dto.AuthDto;
+import com.gb.tech.apiauth.dto.JwtAccessTokenDto;
+import com.gb.tech.apiauth.dto.JwtRefreshTokenDto;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.SneakyThrows;
+import lombok.Synchronized;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.security.KeyFactory;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
+import java.time.ZonedDateTime;
+import java.util.Base64;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+@Service
+public class TokenService {
+
+    @Value("${jwt.secret}")
+    private String privateKey;
+    private SecurityConfig securityConfig;
+    private JwtRsaParser jwtRsaParser;
+    private  String signKey = getPrivateKey(privateKey).toString();
+    private JwtAccessTokenDto serviceToken;
+    private Long serviceTokenExpiration = Long.valueOf(0);
+
+
+    public AuthDto generateToken(Long userId) {
+
+        Date date = Date.from(ZonedDateTime.now().toInstant());
+        Date expirationDate = Date.from(ZonedDateTime.now().plusSeconds(securityConfig.tokenExpiration).toInstant());
+        String accessToken = Jwts.builder()
+            .setClaims(Map.of("role", "USER"))
+            .setSubject(userId.toString())
+            .setIssuedAt(date)
+            .setExpiration(expirationDate)
+            .signWith(SignatureAlgorithm.RS256, signKey)
+            .compact();
+
+        String refreshToken = Jwts.builder()
+                .setSubject(userId.toString())
+                .setIssuedAt(date)
+                .setExpiration(expirationDate)
+                .signWith(SignatureAlgorithm.RS256, signKey)
+                .compact();
+
+        JwtAccessTokenDto jwtAccessTokenDto =new JwtAccessTokenDto(accessToken, securityConfig.tokenExpiration);
+        JwtRefreshTokenDto jwtRefreshTokenDto = new JwtRefreshTokenDto(refreshToken, securityConfig.refreshTokenExpiration);
+
+        return new AuthDto(jwtAccessTokenDto, jwtRefreshTokenDto);
+    }
+
+    public String parseClaims(String token)  {
+        return jwtRsaParser.parseTokenSubject(token);
+    }
+
+    @Synchronized
+    public JwtAccessTokenDto getServiceAccessToken()  {
+
+        if(serviceTokenExpiration < System.currentTimeMillis()) {
+            serviceToken =  generateToken(0L).getAccessToken();
+        }
+        return serviceToken;
+    }
+
+    @SneakyThrows
+    private PrivateKey getPrivateKey(String privateKey){
+        byte[] keyBites = Base64.getDecoder().decode(privateKey.getBytes());
+        X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBites);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        return keyFactory.generatePrivate(spec);
+    }
+
+}
