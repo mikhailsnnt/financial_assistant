@@ -1,4 +1,4 @@
-package ru.bg.dtos;
+package ru.gb.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
