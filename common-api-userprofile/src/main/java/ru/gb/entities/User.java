@@ -1,6 +1,5 @@
 package ru.gb.entities;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,9 +1,11 @@
 package ru.gb.servicies;
 
-import ru.gb.dtos.UserDto;
+import ru.gb.entities.User;
 
 public interface UserService {
-    UserDto getById(Long id);
-    void save(UserDto userDto);
+    User getById(Long id);
+
+    void save(User user);
+
     void delete(Long id);
 }

@@ -8,9 +8,10 @@ import ru.gb.entities.User;
 @Mapper
 public interface UserMapper {
 
-    UserMapper MAPPER  = Mappers.getMapper(UserMapper.class);
+    UserMapper MAPPER = Mappers.getMapper(UserMapper.class);
 
     User toUser(UserDto userDto);
+
     UserDto fromUser(User user);
 
 }

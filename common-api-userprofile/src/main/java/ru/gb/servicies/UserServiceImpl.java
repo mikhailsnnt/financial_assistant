@@ -2,30 +2,25 @@ package ru.gb.servicies;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.gb.dtos.UserDto;
 import ru.gb.entities.User;
-import ru.gb.mappers.UserMapper;
+import ru.gb.exceptions.ResourceNotFoundException;
 import ru.gb.repositories.UserRepository;
 
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserMapper mapper = UserMapper.MAPPER;
+
     private final UserRepository repository;
 
     @Override
-    public UserDto getById(Long id) {
-        User user = repository.findById(id).orElse(null);
-//        if (user == null) {
-//            throw new Exception("User:" + null);
-//        }
-        return mapper.fromUser(user);
+    public User getById(Long id) {
+        return repository.findById(id).orElseThrow(() ->new ResourceNotFoundException("User " + id + " is not found"));
     }
 
     @Override
-    public void save(UserDto userDto) {
-        repository.save(mapper.toUser(userDto));
+    public void save(User user) {
+        repository.save(user);
     }
 
 
