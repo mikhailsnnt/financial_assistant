@@ -12,7 +12,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserService {
 
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Transactional
     public void save(UserCredentials userCredentials) {

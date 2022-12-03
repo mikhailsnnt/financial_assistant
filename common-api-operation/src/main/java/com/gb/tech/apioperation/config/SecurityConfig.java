@@ -15,14 +15,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
-    @Value(value = "${PUBLIC_KEY}")
-    String publicKey;
+    @Value(value = "${publicKey}")
+    private String publicKey;
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter(String publicKey){
         return new JwtAuthenticationFilter(new JwtRsaParser(publicKey));
     }
-
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -35,13 +34,4 @@ public class SecurityConfig {
                 .anyRequest().authenticated();
         return http.build();
     }
-
-    @Bean
-    public PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-
-
-
 }

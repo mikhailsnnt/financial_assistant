@@ -69,7 +69,24 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>6.1.6.Final</version>
 		</dependency>
-
+        <dependency>
+            <groupId>com.gb.financial.assistant</groupId>
+            <artifactId>lib-exception</artifactId>
+            <version>1.0.2</version>
+            <scope>compile</scope>
+        </dependency>
+		<dependency>
+			<groupId>com.gb.financial.assistant</groupId>
+			<artifactId>lib-exception</artifactId>
+			<version>1.0.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.gb.financial.assistant</groupId>
+			<artifactId>lib-exception</artifactId>
+			<version>1.0.2</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -62,8 +62,6 @@
 			<artifactId>feign-core</artifactId>
 			<version>12.1</version>
 		</dependency>
-
-
 		<dependency>
 			<groupId>com.gb.financial.assistant</groupId>
 			<artifactId>lib-jwt</artifactId>
@@ -72,13 +70,8 @@
 		<dependency>
 			<groupId>com.gb.financial.assistant</groupId>
 			<artifactId>lib-exception</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.0</version>
 		</dependency>
-
-
-
-
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

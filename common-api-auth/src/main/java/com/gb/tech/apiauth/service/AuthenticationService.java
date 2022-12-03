@@ -1,15 +1,14 @@
 package com.gb.tech.apiauth.service;
 
-import com.gb.financial.assistant.lib.exception.security.BadCredentialsException;
+
 import com.gb.tech.apiauth.dto.AuthDto;
 import com.gb.tech.apiauth.dto.SignUpDto;
 import com.gb.tech.apiauth.entity.Role;
 import com.gb.tech.apiauth.entity.UserCredentials;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
@@ -17,9 +16,9 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private UserProfileService userProfileService;
-    private TokenService tokenService;
-    private UserService userService;
+    private final UserProfileService userProfileService;
+    private final TokenService tokenService;
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
 
@@ -43,10 +42,10 @@ public class AuthenticationService {
     public AuthDto logIn(SignUpDto loginDto){
 
         UserCredentials userCredentials = userService.findByEmail(loginDto.getEmail()).orElseThrow(()
-                -> new BadCredentialsException(String.format("Неправильный логин или пароль")));
+                -> new BadCredentialsException("Неправильный логин или пароль"));
 
         if(!passwordEncoder.matches(loginDto.getPassword().concat(userCredentials.getSalt()), userCredentials.getHash())) {
-            throw new BadCredentialsException(String.format("Неправильный логин или пароль"));
+            throw new BadCredentialsException("Неправильный логин или пароль");
         }
         return generateTokenForUser(userCredentials.getUserId());
     }
@@ -56,7 +55,7 @@ public class AuthenticationService {
     }
 
     public String randomGeneratingString() {
-        byte[] array = new byte[20];
+        byte[] array = new byte[8];
         new Random().nextBytes(array);
         String generatedString = new String(array, StandardCharsets.UTF_8);
         return generatedString;

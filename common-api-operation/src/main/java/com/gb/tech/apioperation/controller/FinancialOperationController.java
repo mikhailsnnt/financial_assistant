@@ -1,4 +1,4 @@
-package com.gb.tech.apioperation.controllers;
+package com.gb.tech.apioperation.controller;
 
 
 import com.gb.tech.apioperation.dto.FinancialOperationDto;
@@ -19,7 +19,6 @@ public class FinancialOperationController {
     private final FinancialOperationService financialOperationServiceImp;
 
     @GetMapping("/{id}")
-    @ResponseBody
     public FinancialOperationDto getById(@PathVariable ("id") Long id){
         return financialOperationServiceImp.getById(id);
     }
@@ -28,7 +27,6 @@ public class FinancialOperationController {
     public List<FinancialOperationDto> getAll(@RequestParam boolean isSpending){
         return financialOperationServiceImp.getAll(isSpending);
     }
-
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping

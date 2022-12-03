@@ -1,6 +1,8 @@
 package com.gb.tech.apioperation.service;
 
-import com.gb.tech.apioperation.exeptions.InvalidParamsException;
+
+import com.gb.financial.assistant.lib.exception.security.BadCredentialsException;
+import com.gb.financial.assistant.lib.exception.security.InvalidParamsException;
 import com.gb.tech.apioperation.repository.FinancialOperationRepository;
 import com.gb.tech.apioperation.entity.FinancialOperation;
 import com.gb.tech.apioperation.dto.FinancialOperationDto;
@@ -23,11 +25,8 @@ public class FinancialOperationServiceImp implements FinancialOperationService{
 
     @Override
     public FinancialOperationDto getById(Long id){
-        FinancialOperation financialOperation = financialOperationRepository.findById(id).orElse(null);
-        // с обработкой ошибок определимся позже.
-        if (financialOperation == null) {
-            throw new InvalidParamsException("financialOperation:" + null);
-        }
+        FinancialOperation financialOperation = financialOperationRepository.findById(id).orElseThrow(()
+                -> new InvalidParamsException("financialOperation not found"));
         return mapper.fromFinancialOperation(financialOperation);
     }
 
@@ -39,16 +38,12 @@ public class FinancialOperationServiceImp implements FinancialOperationService{
     @Override
     @Transactional
     public void save(FinancialOperationDto financialOperationDto) {
-
         financialOperationRepository.save(mapper.toFinancialOperation(financialOperationDto));
 
     }
 
     @Override
     public void delete(Long id){
-
         financialOperationRepository.deleteById(id);
     }
-
-
 }

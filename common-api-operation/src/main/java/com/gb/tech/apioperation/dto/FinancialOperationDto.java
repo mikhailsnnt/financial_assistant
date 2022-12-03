@@ -18,4 +18,5 @@ public class FinancialOperationDto {
     private Boolean isSpending;
     private BigDecimal amount;
     private LocalDateTime dateTime;
+
 }

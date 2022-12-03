@@ -3,36 +3,28 @@ package com.gb.tech.apiauth.service;
 import com.gb.financial.assistant.lib.jwt.impl.JwtRsaParser;
 import com.gb.tech.apiauth.config.SecurityConfig;
 import com.gb.tech.apiauth.dto.AuthDto;
-import com.gb.tech.apiauth.dto.JwtAccessTokenDto;
-import com.gb.tech.apiauth.dto.JwtRefreshTokenDto;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.KeyFactory;
 import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.time.ZonedDateTime;
 import java.util.Base64;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class TokenService {
 
-    @Value("${jwt.secret}")
-    private String privateKey;
-    private SecurityConfig securityConfig;
-    private JwtRsaParser jwtRsaParser;
-    private  String signKey = getPrivateKey(privateKey).toString();
-    private JwtAccessTokenDto serviceToken;
-    private Long serviceTokenExpiration = Long.valueOf(0);
-
+    private final SecurityConfig securityConfig;
+    private final JwtRsaParser jwtRsaParser;
+    private final String signKey = getPrivateKey(securityConfig.privateKey).toString();
 
     public AuthDto generateToken(Long userId) {
 
@@ -46,30 +38,11 @@ public class TokenService {
             .signWith(SignatureAlgorithm.RS256, signKey)
             .compact();
 
-        String refreshToken = Jwts.builder()
-                .setSubject(userId.toString())
-                .setIssuedAt(date)
-                .setExpiration(expirationDate)
-                .signWith(SignatureAlgorithm.RS256, signKey)
-                .compact();
-
-        JwtAccessTokenDto jwtAccessTokenDto =new JwtAccessTokenDto(accessToken, securityConfig.tokenExpiration);
-        JwtRefreshTokenDto jwtRefreshTokenDto = new JwtRefreshTokenDto(refreshToken, securityConfig.refreshTokenExpiration);
-
-        return new AuthDto(jwtAccessTokenDto, jwtRefreshTokenDto);
+        return new AuthDto(accessToken);
     }
 
     public String parseClaims(String token)  {
         return jwtRsaParser.parseTokenSubject(token);
-    }
-
-    @Synchronized
-    public JwtAccessTokenDto getServiceAccessToken()  {
-
-        if(serviceTokenExpiration < System.currentTimeMillis()) {
-            serviceToken =  generateToken(0L).getAccessToken();
-        }
-        return serviceToken;
     }
 
     @SneakyThrows
