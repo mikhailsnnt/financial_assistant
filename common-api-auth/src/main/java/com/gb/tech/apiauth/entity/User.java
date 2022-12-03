@@ -9,16 +9,16 @@ import javax.validation.constraints.Size;
 @Data
 @Builder
 @Entity
-@Table(name = "user_credentials")
-public class UserCredentials {
+@Table(name = "users")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "email")
+    private String email;
 
     @Enumerated(EnumType.STRING)
     private Role role;

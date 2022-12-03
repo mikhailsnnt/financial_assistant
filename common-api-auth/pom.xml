@@ -58,11 +58,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>io.github.openfeign</groupId>
-			<artifactId>feign-core</artifactId>
-			<version>12.1</version>
-		</dependency>
-		<dependency>
 			<groupId>com.gb.financial.assistant</groupId>
 			<artifactId>lib-jwt</artifactId>
 			<version>1.0.0</version>
@@ -92,6 +87,17 @@
             <artifactId>spring-cloud-openfeign-core</artifactId>
             <version>3.0.3</version>
         </dependency>
+        <dependency>
+            <groupId>com.gb.financial.assistant</groupId>
+            <artifactId>lib-exception</artifactId>
+            <version>1.0.2</version>
+            <scope>compile</scope>
+        </dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>1.4.2.Final</version>
+		</dependency>
     </dependencies>
 
 	<build>

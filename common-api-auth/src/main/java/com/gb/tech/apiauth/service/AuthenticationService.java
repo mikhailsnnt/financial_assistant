@@ -4,7 +4,7 @@ package com.gb.tech.apiauth.service;
 import com.gb.tech.apiauth.dto.AuthDto;
 import com.gb.tech.apiauth.dto.SignUpDto;
 import com.gb.tech.apiauth.entity.Role;
-import com.gb.tech.apiauth.entity.UserCredentials;
+import com.gb.tech.apiauth.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,38 +16,34 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private final UserProfileService userProfileService;
     private final TokenService tokenService;
-    private final UserService userService;
+    private final UserServiceImp userService;
     private final PasswordEncoder passwordEncoder;
-
 
     public AuthDto signUp(SignUpDto signUpDto) {
 
-        Long newUserId = userProfileService.save(signUpDto.getEmail());    // сохраняем в базе User
-
-        String salt = randomGeneratingString(); //  случайная генерация
-
-        UserCredentials userCredentials = UserCredentials.builder()   // сохраняем в базе UserCredentials
-                .userId(newUserId)
+        String salt = randomGeneratingString();
+        User user = User.builder()
+                .email(signUpDto.getEmail())
                 .role(Role.USER)
                 .salt(salt)
                 .hash(passwordEncoder.encode(signUpDto.getPassword().concat(salt)))
                 .build();
-        userService.save(userCredentials);
+        userService.save(user);
 
+        Long newUserId = userService.findByEmail(signUpDto.getEmail()).get().getId();
         return generateTokenForUser(newUserId);
     }
 
     public AuthDto logIn(SignUpDto loginDto){
 
-        UserCredentials userCredentials = userService.findByEmail(loginDto.getEmail()).orElseThrow(()
+        User user = userService.findByEmail(loginDto.getEmail()).orElseThrow(()
                 -> new BadCredentialsException("Неправильный логин или пароль"));
 
-        if(!passwordEncoder.matches(loginDto.getPassword().concat(userCredentials.getSalt()), userCredentials.getHash())) {
+        if(!passwordEncoder.matches(loginDto.getPassword().concat(user.getSalt()), user.getHash())) {
             throw new BadCredentialsException("Неправильный логин или пароль");
         }
-        return generateTokenForUser(userCredentials.getUserId());
+        return generateTokenForUser(user.getId());
     }
 
     private  AuthDto generateTokenForUser(Long userId)  {

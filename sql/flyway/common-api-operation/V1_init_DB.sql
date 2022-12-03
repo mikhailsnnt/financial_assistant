@@ -1,4 +1,4 @@
-create table financial_operation (
+create table financial_operations (
                                 id bigserial not null,
                                 account_id bigint not null,
                                 operation_category_id bigint,

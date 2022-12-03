@@ -1,8 +1,6 @@
 package com.gb.tech.apiauth.dto;
 
 import lombok.Data;
-import lombok.val;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
