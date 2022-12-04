@@ -24,7 +24,9 @@ public class TokenService {
 
     private final SecurityConfig securityConfig;
     private final JwtRsaParser jwtRsaParser;
-    private final String signKey = getPrivateKey(securityConfig.privateKey).toString();
+    @Value("${jwt.secret}")
+    public String privateKey;
+    private final String signKey = getPrivateKey(privateKey).toString();
 
     public AuthDto generateToken(Long userId) {
 

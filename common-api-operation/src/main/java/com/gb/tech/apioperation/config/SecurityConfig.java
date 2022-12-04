@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .anyRequest().authenticated();
+                .antMatchers("/financialOperation").authenticated();
         return http.build();
     }
 }

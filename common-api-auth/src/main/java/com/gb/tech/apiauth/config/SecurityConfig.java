@@ -17,10 +17,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     @Value("${jwt.tokenExpiration}")
     public Long tokenExpiration;
-    @Value(value = "${publicKey}")
+    @Value(value = "${jwt.publicKey}")
     private String publicKey;
-    @Value("${jwt.secret}")
-    public String privateKey;
+
 
     @Bean
     public JwtRsaParser jwtRsaParser (@Value("${jwt.publicKey}") String publicKey) {
