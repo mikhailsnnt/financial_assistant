@@ -13,6 +13,4 @@ public class UserAccountExceptionHandler {
     public ResponseEntity<FOException> catchResourceNotFoundException(ResourceNotFoundException e) {
         return new ResponseEntity<>(new FOException(e.getMessage()), HttpStatus.NOT_FOUND);
     }
-
-
 }

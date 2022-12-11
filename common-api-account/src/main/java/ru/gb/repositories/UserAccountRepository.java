@@ -5,5 +5,4 @@ import ru.gb.entities.UserAccount;
 
 public interface UserAccountRepository extends JpaRepository<UserAccount, Long> {
 
-
 }

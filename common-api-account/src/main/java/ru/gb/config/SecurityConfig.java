@@ -14,14 +14,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
     @Value(value = "${PUBLIC_KEY}")
     String publicKey;
 
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(String publicKey) {
+    public JwtAuthenticationFilter jwtAuthenticationFilter(@Value(value = "${PUBLIC_KEY}") String publicKey) {
         return new JwtAuthenticationFilter(new JwtRsaParser(publicKey));
     }
-
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

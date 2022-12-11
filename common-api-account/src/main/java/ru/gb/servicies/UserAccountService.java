@@ -6,7 +6,9 @@ public interface UserAccountService {
 
     UserAccount getById(Long id);
 
-    void save(UserAccount userAccountDto);
+    void save(UserAccount userAccount);
+
+    void update(UserAccount userAccount);
 
     void delete(Long id);
 
