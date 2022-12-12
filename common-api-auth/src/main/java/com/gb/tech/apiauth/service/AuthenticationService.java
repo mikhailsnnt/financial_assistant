@@ -29,9 +29,8 @@ public class AuthenticationService {
                 .salt(salt)
                 .hash(passwordEncoder.encode(signUpDto.getPassword().concat(salt)))
                 .build();
-        userService.save(user);
+        Long newUserId = userService.save(user);
 
-        Long newUserId = userService.findByEmail(signUpDto.getEmail()).get().getId();
         return generateTokenForUser(newUserId);
     }
 

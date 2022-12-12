@@ -20,8 +20,9 @@ public class UserServiceImp {
     }
 
     @Transactional
-    public void save(User user) {
+    public Long save(User user) {
         userRepository.save(user);
+        return user.getId();
     }
 
     public Optional<User> findByEmail(String email) {
