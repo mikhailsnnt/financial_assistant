@@ -35,7 +35,7 @@ public class TokenService {
     public AuthDto generateToken(Long userId) {
 
         Date date = Date.from(ZonedDateTime.now().toInstant());
-        Date expirationDate = Date.from(ZonedDateTime.now().plusSeconds(securityConfig.tokenExpiration).toInstant());
+        Date expirationDate = Date.from(ZonedDateTime.now().plusSeconds(securityConfig.getTokenExpiration()).toInstant());
         String accessToken = Jwts.builder()
             .setClaims(Map.of("role", "USER"))
             .setSubject(userId.toString())
