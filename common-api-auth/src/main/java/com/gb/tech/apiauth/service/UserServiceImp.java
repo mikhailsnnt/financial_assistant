@@ -19,7 +19,6 @@ public class UserServiceImp {
         return userRepository.findById(id).orElseThrow(() ->new ResourceNotFoundException("User " + id + " is not found"));
     }
 
-    @Transactional
     public Long save(User user) {
         userRepository.save(user);
         return user.getId();

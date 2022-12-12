@@ -13,28 +13,27 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.servlet.Filter;
+
 @Configuration
 public class SecurityConfig {
     @Value("${jwt.tokenExpiration}")
     public Long tokenExpiration;
-    @Value(value = "${jwt.publicKey}")
-    private String publicKey;
-
 
     @Bean
-    public JwtRsaParser jwtRsaParser (@Value("${jwt.publicKey}") String publicKey) {
+    public JwtRsaParser jwtRsaParser (@Value(value = "${jwt.publicKey}") String publicKey) {
             return new JwtRsaParser(publicKey);
         }
 
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(String publicKey){
-        return new JwtAuthenticationFilter(new JwtRsaParser(publicKey));
+    public JwtAuthenticationFilter jwtAuthenticationFilter(JwtRsaParser jwtRsaParser){
+        return new JwtAuthenticationFilter(jwtRsaParser);
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         http
-                .addFilterBefore(jwtAuthenticationFilter(publicKey), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
