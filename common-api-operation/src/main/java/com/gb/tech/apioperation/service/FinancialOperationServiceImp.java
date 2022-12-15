@@ -1,7 +1,5 @@
 package com.gb.tech.apioperation.service;
 
-
-import com.gb.financial.assistant.lib.exception.security.BadCredentialsException;
 import com.gb.financial.assistant.lib.exception.security.InvalidParamsException;
 import com.gb.tech.apioperation.repository.FinancialOperationRepository;
 import com.gb.tech.apioperation.entity.FinancialOperation;
@@ -39,7 +37,6 @@ public class FinancialOperationServiceImp implements FinancialOperationService{
     @Transactional
     public void save(FinancialOperationDto financialOperationDto) {
         financialOperationRepository.save(mapper.toFinancialOperation(financialOperationDto));
-
     }
 
     @Override

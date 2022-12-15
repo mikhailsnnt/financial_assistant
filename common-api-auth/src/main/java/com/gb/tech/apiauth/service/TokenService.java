@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.spec.X509EncodedKeySpec;
@@ -58,5 +57,4 @@ public class TokenService {
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         return keyFactory.generatePrivate(spec);
     }
-
 }

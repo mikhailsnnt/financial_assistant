@@ -1,6 +1,5 @@
 package com.gb.tech.apiauth.service;
 
-
 import com.gb.tech.apiauth.dto.AuthDto;
 import com.gb.tech.apiauth.dto.SignUpDto;
 import com.gb.tech.apiauth.entity.Role;

@@ -5,8 +5,6 @@ import com.gb.tech.apiauth.entity.User;
 import com.gb.tech.apiauth.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
