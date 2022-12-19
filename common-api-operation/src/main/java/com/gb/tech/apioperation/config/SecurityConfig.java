@@ -12,14 +12,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    @Bean
-    public JwtRsaParser jwtRsaParser (@Value(value = "${jwt.publicKey}") String publicKey) {
-        return new JwtRsaParser(publicKey);
-    }
 
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(JwtRsaParser jwtRsaParser){
-        return new JwtAuthenticationFilter(jwtRsaParser);
+    public JwtAuthenticationFilter jwtAuthenticationFilter(@Value(value = "${jwt.publicKey}") String publicKey){
+        return new JwtAuthenticationFilter(new JwtRsaParser(publicKey));
     }
 
     @Bean

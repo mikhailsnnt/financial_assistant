@@ -30,21 +30,20 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_MULTIPLE_DATABASES=financial_operations
-      - POSTGRES_MULTIPLE_DATABASES=auth_user
+      - POSTGRES_MULTIPLE_DATABASES=financial_operations,auth_user
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
       - ./sql/create-multiple-databases:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
 
-    #TODO
-  common-api-operation:
-    image: common-api-operation
-    restart: always
-    environment:
-
-
+# TODO
+#  common-api-operation:
+#    image: common-api-operation
+#    restart: always
+#    environment:
+#
+#
 
 
 
@@ -70,6 +69,8 @@ services:
   spring-cloud-eureka:
     image:
       spring-cloud-eureka
+    ports:
+      - "8761:8761"
     restart: always
 
   spring-cloud-gateway:
