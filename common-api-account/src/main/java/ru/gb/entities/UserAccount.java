@@ -1,31 +1,46 @@
 package ru.gb.entities;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
-@Data
+
 @Entity
+@Getter
+@Setter
 @Table(name = "user_accounts")
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserAccount {
 
     @Id
-    @Column(name ="id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "userId")
     private Long userId;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name="currency")
+    @Column(name = "currency")
     private String currency;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserAccount that = (UserAccount) o;
+        return userId.equals(that.userId) && Objects.equals(name, that.name) && currency.equals(that.currency);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, name, currency);
+    }
 }

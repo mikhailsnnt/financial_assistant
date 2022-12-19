@@ -1,17 +1,23 @@
 package ru.gb.mappers;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+
 import ru.gb.dtos.UserAccountDto;
 import ru.gb.entities.UserAccount;
 
-@Mapper
-public interface UserAccountMapper {
+public class UserAccountMapper {
 
-    UserAccountMapper MAPPER = Mappers.getMapper(UserAccountMapper.class);
+    public static UserAccount toUserAccount(UserAccountDto userAccountDto) {
+        return new UserAccount(userAccountDto.getId(),
+                userAccountDto.getUserId(),
+                userAccountDto.getName(),
+                userAccountDto.getCurrency());
+    }
 
-    UserAccount toUserAccount(UserAccountDto userAccountDto);
-
-    UserAccountDto fromUserAccount(UserAccount userAccount);
+    public static UserAccountDto fromUserAccount(UserAccount userAccount) {
+        return new UserAccountDto(userAccount.getId(),
+                userAccount.getUserId(),
+                userAccount.getName(),
+                userAccount.getCurrency());
+    }
 
 }

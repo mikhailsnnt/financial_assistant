@@ -1,18 +1,23 @@
 package ru.gb.servicies;
 
+import com.gb.financial.assistant.lib.exception.security.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.gb.entities.UserAccount;
-import ru.gb.exceptions.ResourceNotFoundException;
 import ru.gb.repositories.UserAccountRepository;
 
-import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserAccountServiceImpl implements UserAccountService {
 
     private final UserAccountRepository repository;
+
+    @Override
+    public List<UserAccount> findAllByUserId(Long id) {
+        return repository.findAllByUserId(id);
+    }
 
     @Override
     public UserAccount getById(Long id) {
@@ -25,7 +30,6 @@ public class UserAccountServiceImpl implements UserAccountService {
         repository.save(userAccount);
     }
 
-    @Transactional
     @Override
     public void update(UserAccount userAccount) {
         if (!repository.existsById(userAccount.getId())) {
@@ -34,9 +38,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         repository.save(userAccount);
     }
 
-
     @Override
-    @Transactional
     public void delete(Long id) {
         UserAccount userAccount = repository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("User with id:" + id + " not found"));
