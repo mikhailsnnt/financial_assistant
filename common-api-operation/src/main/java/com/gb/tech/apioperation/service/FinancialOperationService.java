@@ -1,16 +1,17 @@
 package com.gb.tech.apioperation.service;
 
 import com.gb.tech.apioperation.dto.FinancialOperationDto;
+import com.gb.tech.apioperation.entity.FinancialOperation;
 
 import java.util.List;
 
 public interface FinancialOperationService {
 
-    FinancialOperationDto getById(Long id);
+    FinancialOperation getById(Long id);
 
-    List<FinancialOperationDto> getAll(Boolean isSpending);
+    List<FinancialOperation> getAll(Boolean isSpending, Long accountId);
 
-    void save(FinancialOperationDto financialOperationDto);
+    void save(FinancialOperation financialOperation);
 
     void delete(Long id);
 }
