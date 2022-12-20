@@ -1,10 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <groupId>com.gb.financial.assistant</groupId>
-  <artifactId>lib-exception</artifactId>
-  <version>1.0.3</version>
+  <artifactId>lib-data</artifactId>
+  <version>2.0.0</version>
   <packaging>jar</packaging>
 
   <name>lib-exception</name>
@@ -29,21 +28,34 @@
   </properties>
 
   <dependencies>
-    <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
+    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
-      <version>5.3.21</version>
-      <scope>provided</scope>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.14.1</version>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.24</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/jakarta.validation/jakarta.validation-api -->
+    <dependency>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
+      <version>3.0.2</version>
+    </dependency>
+
   </dependencies>
 
   <distributionManagement>
     <repository>
       <id>github</id>
-      <name>Financial assistant github package</name>
+      <name>Financial assistant GitHub package</name>
       <url>https://maven.pkg.github.com/mikhailsnnt/financial_assistant</url>
     </repository>
   </distributionManagement>
-
 </project>
