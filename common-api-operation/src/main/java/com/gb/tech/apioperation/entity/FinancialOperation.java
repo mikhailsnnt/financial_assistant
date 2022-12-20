@@ -13,6 +13,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "financial_operations")
 @NoArgsConstructor
+@AllArgsConstructor
 public class FinancialOperation {
 
     @Id
