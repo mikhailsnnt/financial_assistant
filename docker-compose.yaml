@@ -57,13 +57,15 @@ services:
       - '6379:6379'
 
   spring-cloud-eureka:
-    image:
-      spring-cloud-eureka
+    build: ./spring-cloud-eureka
+    volumes:
+      - m2:/root/.m2
     restart: always
 
   spring-cloud-gateway:
-    image:
-      spring-cloud-gateway
+    build: ./spring-cloud-gateway
+    volumes:
+      - m2:/root/.m2
     environment:
       - eureka.client.serviceUrl.defaultZone=http://spring-cloud-eureka:8761/eureka
     restart:
@@ -73,6 +75,19 @@ services:
     depends_on:
       - spring-cloud-eureka
 
+  common-api-account:
+    volumes:
+      - m2:/root/.m2
+    build: ./common-api-account
+    depends_on:
+      - postgres
+      - spring-cloud-eureka
+    environment:
+      - spring.datasource.username=${POSTGRES_USER}
+      - spring.datasource.password=${POSTGRES_PASSWORD}
+      - eureka.client.serviceUrl.defaultZone=http://common-eureka-spring:8761/eureka
+      - jwt.publicKey=${KEY_PUBLIC}
+
 
 
 volumes:
@@ -81,4 +96,6 @@ volumes:
   redis:
     driver: local
   flyway:
+    driver: local
+  m2:
     driver: local
