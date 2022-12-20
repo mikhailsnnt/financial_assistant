@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  application:
+    name: COMMON-API-AUTH
+
+jwt:
+#  in seconds
+  tokenExpiration: 1500
+
