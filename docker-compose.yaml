@@ -58,10 +58,14 @@ services:
 
   spring-cloud-eureka:
     build: ./spring-cloud-eureka
+    volumes:
+      - m2:/root/.m2
     restart: always
 
   spring-cloud-gateway:
     build: ./spring-cloud-gateway
+    volumes:
+      - m2:/root/.m2
     environment:
       - eureka.client.serviceUrl.defaultZone=http://spring-cloud-eureka:8761/eureka
     restart:
@@ -72,6 +76,8 @@ services:
       - spring-cloud-eureka
 
   common-api-account:
+    volumes:
+      - m2:/root/.m2
     build: ./common-api-account
     depends_on:
       - postgres
@@ -90,4 +96,6 @@ volumes:
   redis:
     driver: local
   flyway:
+    driver: local
+  m2:
     driver: local
