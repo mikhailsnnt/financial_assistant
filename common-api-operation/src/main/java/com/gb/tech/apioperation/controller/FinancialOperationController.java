@@ -1,14 +1,13 @@
 package com.gb.tech.apioperation.controller;
 
-import com.gb.tech.apioperation.dto.FinancialOperationDto;
-import com.gb.tech.apioperation.entity.FinancialOperation;
-import com.gb.tech.apioperation.mapper.FinancialOperationMapper;
-import com.gb.tech.apioperation.service.AccountGateway;
+import com.gb.financial.assistant.lib.data.operation.OperationDto;
+import com.gb.financial.assistant.lib.data.operation.OperationSaveDto;
 import com.gb.tech.apioperation.service.FinancialOperationService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -16,36 +15,26 @@ import java.util.List;
 @RequestMapping("/financialOperation")
 public class FinancialOperationController {
 
-    private final FinancialOperationService financialOperationServiceImp;
-    private final AccountGateway accountGateway;
+    private final FinancialOperationService service;
 
     @GetMapping("/{id}")
-    public FinancialOperationDto getById(@PathVariable long id){
-        FinancialOperation financialOperation = financialOperationServiceImp.getById(id);
-        accountGateway.getById(financialOperation.getAccountId());
-        return FinancialOperationMapper.fromFinancialOperation(financialOperation);
+    public OperationDto getById(@PathVariable long id) {
+        return service.getById(id);
     }
 
     @GetMapping
-    public List<FinancialOperationDto> getAll(@RequestParam boolean isSpending){
-        List<Object> list = accountGateway.getAll(Long.valueOf(SecurityContextHolder.getContext().getAuthentication().getName()));
-        // ToDo
-
-        return null;
+    public List<OperationDto> getAll(@RequestParam(required = false, defaultValue = "false") boolean isSpending) {
+        return service.getAll(isSpending);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public void save(@RequestBody FinancialOperationDto financialOperationDto){
-        accountGateway.getById(financialOperationDto.getAccountId());
-        financialOperationServiceImp.save(FinancialOperationMapper.toFinancialOperation(financialOperationDto));
+    public long save(@Valid @RequestBody OperationSaveDto operationDto) {
+        return service.save(operationDto);
     }
 
     @DeleteMapping
-    public void delete(@RequestParam Long id){
-        FinancialOperation financialOperation = financialOperationServiceImp.getById(id);
-        accountGateway.getById(financialOperation.getAccountId());
-        financialOperationServiceImp.delete(id);
+    public void delete(@RequestParam Long id) {
+        service.delete(id);
     }
-
 }

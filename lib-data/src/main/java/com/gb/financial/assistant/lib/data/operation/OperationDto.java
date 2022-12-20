@@ -1,4 +1,4 @@
-package com.gb.tech.apioperation.dto;
+package com.gb.financial.assistant.lib.data.operation;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,12 +10,12 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FinancialOperationDto {
+public class OperationDto {
 
-    private Long id;
-    private Long accountId;
-    private Long operationCategoryId;
-    private Boolean isSpending;
+    private long id;
+    private long accountId;
+    private long operationCategoryId;
+    private boolean isSpending;
     private BigDecimal amount;
     private LocalDateTime dateTime;
 

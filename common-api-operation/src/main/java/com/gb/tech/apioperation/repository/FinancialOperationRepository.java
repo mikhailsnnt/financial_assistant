@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface FinancialOperationRepository extends JpaRepository<FinancialOperation, Long> {
 
-    List<FinancialOperation> findAllByIsSpendingAndAccountId(Boolean isSpending, Long accountId);
+    List<FinancialOperation> findAllByIsSpendingAndAccountIdIn(Boolean isSpending, List<Long> accountIds);
 }
