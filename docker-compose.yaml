@@ -57,13 +57,11 @@ services:
       - '6379:6379'
 
   spring-cloud-eureka:
-    image:
-      spring-cloud-eureka
+    build: ./spring-cloud-eureka
     restart: always
 
   spring-cloud-gateway:
-    image:
-      spring-cloud-gateway
+    build: ./spring-cloud-gateway
     environment:
       - eureka.client.serviceUrl.defaultZone=http://spring-cloud-eureka:8761/eureka
     restart:
@@ -72,6 +70,17 @@ services:
       - '7771:8762'
     depends_on:
       - spring-cloud-eureka
+
+  common-api-account:
+    build: ./common-api-account
+    depends_on:
+      - postgres
+      - spring-cloud-eureka
+    environment:
+      - spring.datasource.username=${POSTGRES_USER}
+      - spring.datasource.password=${POSTGRES_PASSWORD}
+      - eureka.client.serviceUrl.defaultZone=http://common-eureka-spring:8761/eureka
+      - jwt.publicKey=${KEY_PUBLIC}
 
 
 
