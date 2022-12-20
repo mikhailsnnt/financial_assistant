@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(@Value(value = "${PUBLIC_KEY}") String publicKey) {
+    public JwtAuthenticationFilter jwtAuthenticationFilter(@Value("${jwt.publicKey}") String publicKey) {
         return new JwtAuthenticationFilter(new JwtRsaParser(publicKey));
     }
 

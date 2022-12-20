@@ -12,10 +12,10 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-@Table(name = "user_accounts")
+@Table(name = "accounts")
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAccount {
+public class Account {
 
     @Id
     @Column(name = "id")
@@ -35,7 +35,7 @@ public class UserAccount {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserAccount that = (UserAccount) o;
+        Account that = (Account) o;
         return userId.equals(that.userId) && Objects.equals(name, that.name) && currency.equals(that.currency);
     }
 
