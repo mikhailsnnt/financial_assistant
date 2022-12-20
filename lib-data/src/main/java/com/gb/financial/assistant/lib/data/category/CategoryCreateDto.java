@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryCreateDto {
-    @NotBlank
+    @NotBlank(message = "Category name is mandatory, and must not be blank")
     private String name;
-    @NotNull
+    @NotNull(message = "Operation type is not specified")
     private OperationType operationType;
 }

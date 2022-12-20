@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountCreateDto {
-    @NotBlank
+    @NotBlank(message = "Account name is mandatory, and cannot be empty")
     private String name;
-    @NotNull
+    @NotNull(message = "Currency is not specified")
     private Currency currency;
 }
