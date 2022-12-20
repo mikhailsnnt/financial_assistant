@@ -1,11 +1,9 @@
 package com.gb.tech.apiauth.service;
 
-import com.gb.financial.assistant.lib.jwt.impl.JwtRsaParser;
 import com.gb.tech.apiauth.config.SecurityConfig;
 import com.gb.tech.apiauth.dto.AuthDto;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,36 +16,29 @@ import java.util.Date;
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
 public class TokenService {
 
     private final SecurityConfig securityConfig;
-    private final JwtRsaParser jwtRsaParser;
     private final PrivateKey signKey;
 
-    public TokenService(@Value("${jwt.secret}") String privateKey, SecurityConfig securityConfig, JwtRsaParser jwtRsaParser){
+    public TokenService(@Value("${jwt.secret}") String privateKey, SecurityConfig securityConfig){
         this.signKey = getPrivateKey(privateKey);
         this.securityConfig = securityConfig;
-        this.jwtRsaParser = jwtRsaParser;
     }
 
-    public AuthDto generateToken(Long userId) {
+    public AuthDto generateToken(long userId) {
 
         Date date = Date.from(ZonedDateTime.now().toInstant());
         Date expirationDate = Date.from(ZonedDateTime.now().plusSeconds(securityConfig.getTokenExpiration()).toInstant());
         String accessToken = Jwts.builder()
             .setClaims(Map.of("role", "USER"))
-            .setSubject(userId.toString())
+            .setSubject(String.valueOf(userId))
             .setIssuedAt(date)
             .setExpiration(expirationDate)
             .signWith(SignatureAlgorithm.RS256, signKey)
             .compact();
 
         return new AuthDto(accessToken);
-    }
-
-    public String parseClaims(String token)  {
-        return jwtRsaParser.parseTokenSubject(token);
     }
 
     @SneakyThrows

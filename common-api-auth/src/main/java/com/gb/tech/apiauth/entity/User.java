@@ -1,13 +1,17 @@
 package com.gb.tech.apiauth.entity;
 
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
-@Data
-@Builder
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -30,4 +34,17 @@ public class User {
     @Column(name = "hash")
     @Size(max = 255)
     private String hash;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

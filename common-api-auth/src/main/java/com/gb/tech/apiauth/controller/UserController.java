@@ -1,9 +1,9 @@
 package com.gb.tech.apiauth.controller;
 
 import com.gb.tech.apiauth.dto.UserDto;
-import com.gb.tech.apiauth.mapper.UserMapper;
-import com.gb.tech.apiauth.service.UserServiceImp;
+import com.gb.tech.apiauth.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -11,16 +11,20 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class UserController {
 
-    private final UserServiceImp userServiceImpl;
-    private final UserMapper mapper = UserMapper.MAPPER;
+    private final UserService service;
 
-    @GetMapping("/id")
-    public UserDto getById(@RequestParam Long id) {
-        return mapper.fromUser(userServiceImpl.getById(id));
+
+    @GetMapping
+    public UserDto getCurrent() {
+        return service.getById(getAuthenticatedUserId());
     }
 
     @DeleteMapping
-    public void delete(@RequestParam Long id) {
-        userServiceImpl.delete(id);
+    public void delete() {
+        service.delete(getAuthenticatedUserId());
+    }
+
+    private long getAuthenticatedUserId() {
+        return Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 }
