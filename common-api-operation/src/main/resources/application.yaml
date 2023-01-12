@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/financial_operations"
+    username: sampleveryharduser
+    password: sampleveryhardpassword
+  eureka:
+    client:
+      serviceUrl:
+        defaultZone:
+          http://common-eureka-spring:8761/eureka/
+    instance:
+      preferIpAddress: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  application:
+    name: COMMON-API-OPERATION
+jwt:
+  publicKey:
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoUtOJ+jMl7fld/CzdHg7lEhTL59bIBqSHfVbDavQl+5IL2jGNXW5gW+oSIAh6LwHT2CyvpHAYd789mZ/qxh8nF/cKTTsCHJB9IMkCEKCGHOGYS9ip7DY8nfLdpN4/qFPfhLMXtoHDsDJuA9skIRSpWqtjWVh97CwRy8Lt8oO59JFdEdURt2QNaH2Dq2O7ojEWZa0BMEcHlyDJJDT3bNQQ8qFLoP9o/zHcEFKrNEZlg7HXanT/ncwjU1NP12lodYO5365JZyCRq9f9EfUf/JoEe0sWbHy9Cu7Imv/pcQcBtroA8ogs0ql98V9TlLaqBUSiohO4pZ/MbzhlYvIdWRD4wIDAQAB
+
+

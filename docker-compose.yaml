@@ -1,0 +1,128 @@
+version: '3'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  broker:
+    image: confluentinc/cp-kafka:7.0.1
+    container_name: broker
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_MULTIPLE_DATABASES=financial_operations,auth_user
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+      - ./sql/create-multiple-databases:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+
+  flyway:
+    image: flyway/flyway
+    command: -url=jdbc:postgresql://postgres/financial_operations?createIfNotExists=true -schemas=public  -locations=filesystem:/flyway/sql/financial_operations -user=${POSTGRES_USER} -password=${POSTGRES_PASSWORD} -connectRetries=60 migrate
+    volumes:
+      - ./sql/flyway:/flyway/sql
+    depends_on:
+      - postgres
+
+
+  redis:
+    image:
+      redis
+    restart: always
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis:/data
+    ports:
+      - '6379:6379'
+
+  spring-cloud-eureka:
+    build: ./spring-cloud-eureka
+    volumes:
+      - m2:/root/.m2
+    restart: always
+
+  spring-cloud-gateway:
+    build: ./spring-cloud-gateway
+    volumes:
+      - m2:/root/.m2
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://spring-cloud-eureka:8761/eureka
+    restart:
+      always
+    ports:
+      - '7771:8762'
+    depends_on:
+      - spring-cloud-eureka
+
+  common-api-account:
+    volumes:
+      - m2:/root/.m2
+    build: ./common-api-account
+    depends_on:
+      - postgres
+      - spring-cloud-eureka
+    environment:
+      - spring.datasource.username=${POSTGRES_USER}
+      - spring.datasource.password=${POSTGRES_PASSWORD}
+      - eureka.client.serviceUrl.defaultZone=http://common-eureka-spring:8761/eureka
+      - jwt.publicKey=${KEY_PUBLIC}
+
+  common-api-operation:
+    volumes:
+      - m2:/root/.m2
+    build: ./common-api-operation
+    depends_on:
+      - postgres
+      - spring-cloud-eureka
+      - common-api-account
+    environment:
+      - spring.datasource.username=${POSTGRES_USER}
+      - spring.datasource.password=${POSTGRES_PASSWORD}
+      - eureka.client.serviceUrl.defaultZone=http://common-eureka-spring:8761/eureka
+      - jwt.publicKey=${KEY_PUBLIC}
+
+  common-api-auth:
+    volumes:
+      - m2:/root/.m2
+    build: ./common-api-operation
+    depends_on:
+      - postgres
+      - spring-cloud-eureka
+      - common-api-account
+    environment:
+      - spring.datasource.username=${POSTGRES_USER}
+      - spring.datasource.password=${POSTGRES_PASSWORD}
+      - eureka.client.serviceUrl.defaultZone=http://common-eureka-spring:8761/eureka
+      - jwt.publicKey=${KEY_PUBLIC}
+      - jwt.privateKey=${KEY_PRIVATE}
+
+
+
+volumes:
+  postgres:
+    driver: local
+  redis:
+    driver: local
+  flyway:
+    driver: local
